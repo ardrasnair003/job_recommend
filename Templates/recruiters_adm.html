@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruiters</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .user-table {
+            margin: 50px auto;
+            max-width: 900px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .table thead {
+            background-color: #007bff;
+            color: white;
+        }
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .heading {
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container user-table">
+    <h3 class="heading">Recruiters</h3>
+
+     <a href="{% url 'admin_home' %}" class="btn btn-primary btn-sm">Back</a>
+
+    <table class="table table-hover table-responsive">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reg in registrations %}
+            <tr>
+                <td>{{ reg.user.first_name }} {{ reg.user.last_name }}</td>
+                <td>{{ reg.user.email }}</td>
+                <td>
+        </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center">No recruiters found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

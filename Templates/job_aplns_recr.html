@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Applications</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome (icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .table td, .table th {
+            vertical-align: middle;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #007bff;
+        }
+
+        .btn-action {
+            margin: 0 3px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="page-title"><i class="fas fa-users me-2"></i>Job Applications</h2>
+
+    {% if gtd %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle shadow-sm">
+                <thead class="text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>Applicant</th>
+                        <th>Job</th>
+                        <th>City</th>
+                        <th>Age range</th>
+                        <th>Skills needed</th>
+                        <th>Status</th>
+                        <th>Resume</th>
+                        <th>Applied On</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in gtd %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ app.applicant.user.first_name }} {{ app.applicant.user.last_name }}</td>
+                        <td>{{ app.job.designation }}</td>
+                        <td>{{ app.job.city }}</td>
+                        <td>{{ app.job.age_range }}</td>
+                        <td>{{ app.job.skills_needed }}</td>
+
+                        <td class="text-center">
+                            {% if app.recruiter_status == 'Pending' %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% elif app.recruiter_status == 'Accepted' %}
+                                <span class="badge bg-success">Accepted</span>
+                            {% elif app.recruiter_status == 'Rejected' %}
+                                <span class="badge bg-danger">Rejected</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Pending</span>
+                            {% endif %}
+                        </td>
+
+                        <td class="text-center">
+                            {% if app.resume %}
+                                <a href="{{ app.resume.url }}" download class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                            {% else %}
+                                <span class="text-muted">No resume</span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ app.applied_at|date:"Y-m-d H:i" }}</td>
+
+                       <td class="text-center">
+                            <a href="{% url 'accept_application_recr' app.id %}"
+                               class="btn btn-success btn-sm btn-action"
+                               title="Accept"
+                               onclick="return confirm('Are you sure you want to ACCEPT this application?');">
+                                <i class="fas fa-check"></i>
+                            </a>
+                            <a href="{% url 'reject_application_recr' app.id %}"
+                               class="btn btn-warning btn-sm btn-action"
+                               title="Reject"
+                               onclick="return confirm('Are you sure you want to REJECT this application?');">
+                                <i class="fas fa-times"></i>
+                            </a>
+                            <a href="{% url 'delete_application_recr' app.id %}"
+                               class="btn btn-danger btn-sm btn-action"
+                               title="Delete"
+                               onclick="return confirm('Are you sure you want to DELETE this application?');">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            <i class="fas fa-info-circle me-1"></i> No applications received yet.
+        </div>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <a href="{% url 'recruiter_home' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Back
+        </a>
+    </div>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Show Django messages -->
+<script>
+    {% if messages %}
+        {% for msg in messages %}
+            alert("{{ msg }}");
+        {% endfor %}
+    {% endif %}
+</script>
+
+</body>
+</html>

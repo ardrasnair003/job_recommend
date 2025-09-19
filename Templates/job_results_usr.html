@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Recommendations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS for responsiveness -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .job-card {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .job-title {
+            font-size: 1.5rem;
+            color: #007bff;
+        }
+
+        .score {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .no-jobs {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-top: 50px;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+     <button type="button" class="btn btn-primary mt-2" onclick="window.location.href='{% url 'user_home' %}'">Back</button>
+
+    {% if trt %}
+       <h2 class="mb-4">Recruiter added Job Recommendations</h2>
+        {% for j in trt %}
+            <div class="job-card">
+                <h4 class="job-title">{{ j.designation }}</h4>
+                <p><strong>Recruiter:</strong> {{ j.pst_reg.user.first_name }} {{ j.pst_reg.user.last_name }}</p>
+                <p><strong>Location:</strong> {{ j.city }}</p>
+                <p><strong>Age range:</strong> {{ j.age_range }}</p>
+
+                 <form id="apply_form" action="{% url 'apply_to_job' j.id %}" method="get">
+                    {% csrf_token %}
+                    <button form="apply_form" type="submit" class="btn btn-primary mt-2">Apply</button>
+                </form>
+
+            </div>
+        {% endfor %}
+
+    {% else %}
+        <div class="no-jobs">
+            😞 No matching recruiter jobs found
+        </div>
+
+    {% endif %}
+
+    {% if recommendations %}
+        <h2 class="mb-4">Other suggested jobs</h2>
+        {% for job in recommendations %}
+            <div class="job-card">
+                <h4 class="job-title">{{ job.title }}</h4>
+                <p><strong>Company ID:</strong> {{ job.company }}</p>
+                <p><strong>Location:</strong> {{ job.location }}</p>
+                <p><strong>Work Type:</strong> {{ job.work_type }}</p>
+                <p><strong>Description:</strong><br>{{ job.description }}</p>
+            </div>
+        {% endfor %}
+
+    {% else %}
+        <div class="no-jobs">
+            😞 No matching jobs found
+        </div>
+    {% endif %}
+</div>
+
+
+<script>
+    {% if messages %}
+        {% for msg in messages %}
+            alert("{{ msg }}");
+        {% endfor %}
+    {% endif %}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Applied Jobs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .table td, .table th {
+            vertical-align: middle;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="page-title"><i class="fas fa-clipboard-list me-2"></i>Your Applied Jobs</h2>
+
+    {% if gtd %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle shadow-sm">
+                <thead class="text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>Designation</th>
+                        <th>Recruiter</th>
+                        <th>City</th>
+                        <th>Age range</th>
+                        <th>Needed skills</th>
+                        <th>Status</th>
+                        <th>Applied Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in gtd %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ job.job.designation }}</td>
+                        <td>{{ job.job.pst_reg.user.first_name }} {{ job.job.pst_reg.user.last_name }}</td>
+                        <td>{{ job.job.city }}</td>
+                        <td>{{ job.job.age_range }}</td>
+                        <td>{{ job.job.skills_needed }}</td>
+                        <td>
+                            {% if job.recruiter_status == 'Pending' %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% elif job.recruiter_status == 'Accepted' %}
+                                <span class="badge bg-success">Accepted</span>
+                            {% elif job.recruiter_status == 'Rejected' %}
+                                <span class="badge bg-danger">Rejected</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ job.applied_at|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            <i class="fas fa-info-circle me-1"></i> You haven't applied to any jobs yet or
+            your previous job application has been deleted by recruiter
+        </div>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <a href="{% url 'user_home' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Back
+        </a>
+    </div>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Display Django messages -->
+<script>
+    {% if messages %}
+        {% for msg in messages %}
+            alert("{{ msg }}");
+        {% endfor %}
+    {% endif %}
+</script>
+
+</body>
+</html>

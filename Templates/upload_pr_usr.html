@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Update profile</title>
+  <link rel="stylesheet" href="style.css">
+
+    <style>
+          #quiz-form{
+            border-radius: 5px;
+            border: 2px solid rgb(241, 238, 238);
+            width: 450px;
+            background-color: white;
+            padding: 24px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 50px;
+          }
+          #submit-btn{
+          margin-top: 24px;
+          }
+          input[type=submit] {
+            width: 22%;
+            background-color: #138bec;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            button {
+            width: 15%;
+            background-color: #138bec;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover{
+            color: #06BBCC;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        #img-satya{
+          width: 150px;
+          height: 150px;
+          border-radius: 100%;
+        }
+        .form-field{
+          border: none;
+          border-bottom: 1px solid #ccc;
+          width: 20%;
+          padding: 1%;
+        }
+        .form-label{
+          margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body bgcolor="CD968B">
+  <div align="center">
+
+    <form method="post" action="{% url 'upload_pr_usr' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+            <h1 style="text-align: center;">{{um.first_name}} {{um.last_name}}</h1><br><br>
+            <p class="form-label">First Name :</p><input class="form-field" type="text" value="{{um.first_name}}" name="first_name" readonly><br><br>
+            <p class="form-label">Last Name :</p><input class="form-field" type="text" value="{{um.last_name}}" name="last_name" readonly><br><br>
+            <p class="form-label">Email :</p><input class="form-field" type="email" value="{{um.email}}" name="email" readonly><br><br>
+            <p class="form-label">Phone :</p><input class="form-field" type="number" value="{{bb.phone}}" name="phone" required><br><br>
+            <p class="form-label">Qualification :</p><input class="form-field" type="text" value="{{bb.qualification}}" name="qual" required><br><br>
+            <p class="form-label">Skills :</p><input class="form-field" type="text" value="{{bb.skills}}" name="skills" required><br><br>
+            <p class="form-label">Experience :</p><input class="form-field" type="text" value="{{bb.experience}}" name="experience" required><br><br>
+            <p class="form-label">Location :</p><input class="form-field" type="text" value="{{bb.location}}" name="location" required><br><br>
+            <p class="form-label">Preference :</p><input class="form-field" type="text" value="{{bb.preference}}" name="preference" required><br><br>
+          <div id="submit-btn">
+          <button type="submit">UPLOAD</button>&nbsp &nbsp &nbsp &nbsp
+              <button type="button" onclick="location.href='{% url 'user_home' %}'" name='mybtn2'>BACK</button>
+        </div>
+        </form>
+  </div>
+
+
+ <script>
+    {% if messages %}
+        {% for msg in messages %}
+                alert("{{ msg }}");
+        {% endfor %}
+    {% endif %}
+ </script>
+
+
+  </body>
+</html>
+
+

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Job</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome (for icons if needed later) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .form-container {
+            max-width: 700px;
+            margin: 60px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #007bff;
+            font-weight: 600;
+        }
+
+        .form-control {
+            border-radius: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-container">
+        <h2 class="form-title"><i class="fas fa-user-plus"></i> Add Job</h2>
+
+        <form method="post" action="{% url 'add_job_recr' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Designation</label>
+                <input type="text" name="desg" class="form-control" placeholder="Enter designation" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">City</label>
+                <input type="text" name="city" class="form-control" placeholder="Enter city" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Age Range</label>
+                <input type="text" name="a_r" class="form-control" placeholder="Enter age range" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Number of Vacancies</label>
+                <input type="number" name="n_o_v" class="form-control" placeholder="Enter number of vacancies" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Skills Needed</label>
+                <textarea name="skills" class="form-control" rows="4" placeholder="Enter required skills" required></textarea>
+            </div>
+
+            <div class="btn-group mt-4">
+                <input type="submit" class="btn btn-success" value="Submit">
+                <input type="reset" class="btn btn-secondary" value="Cancel">
+                <input type="button" class="btn btn-outline-primary" onclick="location.href='{% url 'job_posts_recr' %}'" value="Back">
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Bootstrap JS for interactivity (optional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Alert Messages -->
+<script>
+    {% if messages %}
+        {% for msg in messages %}
+            alert("{{ msg }}");
+        {% endfor %}
+    {% endif %}
+</script>
+
+</body>
+</html>
